@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-lg-8">
+    <div class="content">
+      {{!-- <p class="lead">{{{post.description}}}</p> --}}
+      <p class="lead">{{questions}}</p>
+    </div>
+  </div>
+  <div class="card my-4">
+    <h5 class="card-header">Answer the Question</h5>
+    <div class="card-body">
+      <form class="question-form" action="http://localhost:3000/" method="post">
+        <div class="form-group">
+          <textarea
+            class="form-control value"
+            rows="3"
+            name="question_body"
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submt answer and Get
+          rating</button>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  let val=document.querySelector(".value"); 
+  let questios=document.querySelector(".lead").textContent;
+  document.querySelector(".question-form").addEventListener("submit",async(e)=>{
+  e.preventDefault(); 
+  let jsonData={ data:` this is my question ${questios} this
+  is my answer for that answer : "${val.value} "providing rating out of 10 for
+  my answer in one line and tell how to improve my answer if the answer is not correct tell your answer is wrong strict evalution is needed if the answer is less than 20 characters tell explain more i will not give ratings`};
+  console.log(jsonData); try { 
+    let response = await axios.post('https://chat-gpt-l92n.onrender.com/answer', jsonData);
+  console.log('ServerResponse:', response.data.data); 
+  let redirectUrl=`https://al-blog-7fx8.onrender.com/answer/?data=${response.data.data}`;
+  window.location.href = redirectUrl; } catch (error) { console.error('Error:',
+  error); } })
+</script>

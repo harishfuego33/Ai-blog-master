@@ -1,0 +1,171 @@
+{{!-- <div id="content" class="selectable">
+        <h2>Title 1</h2>
+        <p>This is the content of Title 1. Right-click on it to save.</p>
+        <p>This is the content of Title 2. Right-click on it to save.</p>
+        <p>This is the content of Title 3. Right-click on it to save.</p>
+    </div> --}}
+<div class="row">
+  <div class="col-lg-8">
+    <h1 class="mt-4">{{post.title}}</h1>
+    <p class="lead">
+      by
+      <a href="#">Admin</a>
+    </p>
+    <hr />
+    <!-- Date/Time -->
+    <p>Posted on {{post.creationDate}}</p>
+    <button class="voice">speak</button>
+    <button class="stop">stop</button>
+    <hr />
+    <!-- Preview Image -->
+    <img class="img-fluid rounded" src="{{post.file}}" alt="" />
+    <hr />
+    <!-- Post Content -->
+    <div id="content" class="selectable">
+     <div class="content">
+      <p class="lead">{{{post.description}}}</p>
+     </div>
+    </div>
+    <hr />
+    
+    <!-- Comments Form -->
+    <div class="card my-4">
+      <h5 class="card-header">Leave a Comment:</h5>
+      <div class="card-body">
+        <form action="/post/{{post._id}}" method="post">
+          <div class="form-group">
+            <textarea
+              class="form-control"
+              rows="3"
+              name="comment_body"
+            ></textarea>
+            <input type="hidden" name="id" value="{{post._id}}" />
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+
+    </div>
+    <div class="card my-4 content1">
+      <h5 class="card-header">Give the content</h5>
+      <div class="card-body">
+        {{! <p>action="http://localhost:3000/" method="post"</p> }}
+        <form class="question-form">
+          <div class="form-group">
+            <textarea
+              class="form-control value"
+              rows="3"
+              name="question_body"
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Give Question</button>
+        </form>
+      </div>
+    </div>
+
+    {{#each post.comments}}
+      {{#if commentisapproved}}
+        <div class="media mb-4">
+          <img
+            class="d-flex mr-3 rounded-circle"
+            src="http://placehold.it/50x50"
+            alt=""
+          />
+          <div class="media-body">
+            <h5 class="mt-0">{{user.firstname}} {{user.lastname}}</h5>
+            {{body}}
+          </div>
+        </div>
+      {{/if}}
+    {{/each}}
+
+    <!-- Single Comment -->
+
+  </div>
+
+  <!-- Sidebar Widgets Column -->
+  <div class="col-md-4">
+
+    
+
+    <!-- Categories Widget -->
+    <div class="card my-4">
+      <h5 class="card-header">Categories</h5>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <ul class="list-unstyled mb-0">
+              {{#each categories}}
+                <li><a href="#">{{title}}</a></li>
+              {{/each}}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  let val=document.querySelector(".value"); let speech = new
+  SpeechSynthesisUtterance(); let voices =
+  document.querySelector(".voice").addEventListener("click", () => { voices =
+  window.speechSynthesis.getVoices(); speech.text =
+  document.querySelector(".content").textContent;
+  window.speechSynthesis.speak(speech); }); const
+  creatQuestion=document.querySelector(".question-form").addEventListener("submit",async(e)=>{
+  e.preventDefault(); const jsonData={ data:val.value }; try { let response =
+  await axios.post('https://chat-gpt-l92n.onrender.com/', jsonData);
+  console.log('ServerResponse:', response.data.data); let
+  redirectUrl=`https://al-blog-7fx8.onrender.com/question/?data=${response.data.data}`;
+  window.location.href = redirectUrl; } catch (error) { console.error('Error:',
+  error); } })
+
+  document.querySelector(".stop").addEventListener("click", () => {
+    window.speechSynthesis.cancel();
+});
+
+
+
+ function saveContent(title,content) {
+            
+           // title='FFG'
+            console.log(content)
+            // Make an HTTP POST request to your server
+            fetch('http://localhost:8000/save-content', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title, content })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to save content');
+                }
+                console.log('Content saved successfully');
+            })
+            .catch(error => {
+                console.error('Error saving content:', error.message);
+            });
+        }
+
+         const contentElement = document.getElementById('content');
+         console.log(contentElement.textContent)
+
+document.addEventListener('DOMContentLoaded', function() {
+        // Show context menu on right-click
+        const postTitleElement = document.querySelector('.col-lg-8 h1');
+         const postTitle = postTitleElement.innerText;
+        contentElement.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+            const selectedContent = window.getSelection().toString().trim();
+            //const title = contentElement.querySelector('h2').innerText;
+            //console.log(title)
+             
+            saveContent(postTitle,selectedContent);
+        });
+})
+</script>
