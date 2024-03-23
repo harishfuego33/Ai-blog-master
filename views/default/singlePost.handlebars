@@ -1,9 +1,9 @@
-{{!-- <div id="content" class="selectable">
+{{! <div id="content" class="selectable">
         <h2>Title 1</h2>
         <p>This is the content of Title 1. Right-click on it to save.</p>
         <p>This is the content of Title 2. Right-click on it to save.</p>
         <p>This is the content of Title 3. Right-click on it to save.</p>
-    </div> --}}
+    </div> }}
 <div class="row">
   <div class="col-lg-8">
     <h1 class="mt-4">{{post.title}}</h1>
@@ -22,12 +22,12 @@
     <hr />
     <!-- Post Content -->
     <div id="content" class="selectable">
-     <div class="content">
-      <p class="lead">{{{post.description}}}</p>
-     </div>
+      <div class="content">
+        <p class="lead">{{{post.description}}}</p>
+      </div>
     </div>
     <hr />
-    
+
     <!-- Comments Form -->
     <div class="card my-4">
       <h5 class="card-header">Leave a Comment:</h5>
@@ -86,8 +86,6 @@
   <!-- Sidebar Widgets Column -->
   <div class="col-md-4">
 
-    
-
     <!-- Categories Widget -->
     <div class="card my-4">
       <h5 class="card-header">Categories</h5>
@@ -121,51 +119,22 @@
   console.log('ServerResponse:', response.data.data); let
   redirectUrl=`https://al-blog-7fx8.onrender.com/question/?data=${response.data.data}`;
   window.location.href = redirectUrl; } catch (error) { console.error('Error:',
-  error); } })
-
-  document.querySelector(".stop").addEventListener("click", () => {
-    window.speechSynthesis.cancel();
-});
-
-
-
- function saveContent(title,content) {
-            
-           // title='FFG'
-            console.log(content)
-            // Make an HTTP POST request to your server
-            fetch('http://localhost:8000/save-content', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ title, content })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to save content');
-                }
-                console.log('Content saved successfully');
-            })
-            .catch(error => {
-                console.error('Error saving content:', error.message);
-            });
-        }
-
-         const contentElement = document.getElementById('content');
-         console.log(contentElement.textContent)
-
-document.addEventListener('DOMContentLoaded', function() {
-        // Show context menu on right-click
-        const postTitleElement = document.querySelector('.col-lg-8 h1');
-         const postTitle = postTitleElement.innerText;
-        contentElement.addEventListener('contextmenu', function(event) {
-            event.preventDefault();
-            const selectedContent = window.getSelection().toString().trim();
-            //const title = contentElement.querySelector('h2').innerText;
-            //console.log(title)
-             
-            saveContent(postTitle,selectedContent);
-        });
-})
+  error); } }) document.querySelector(".stop").addEventListener("click", () => {
+  window.speechSynthesis.cancel(); }); function saveContent(title,content) { //
+  title='FFG' console.log(content) // Make an HTTP POST request to your server
+  fetch('https://ai-to-blog.onrender.com/save-content', { method: 'POST',
+  headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title,
+  content }) }) .then(response => { if (!response.ok) { throw new Error('Failed
+  to save content'); } console.log('Content saved successfully'); })
+  .catch(error => { console.error('Error saving content:', error.message); }); }
+  const contentElement = document.getElementById('content');
+  console.log(contentElement.textContent)
+  document.addEventListener('DOMContentLoaded', function() { // Show context
+  menu on right-click const postTitleElement = document.querySelector('.col-lg-8
+  h1'); const postTitle = postTitleElement.innerText;
+  contentElement.addEventListener('contextmenu', function(event) {
+  event.preventDefault(); const selectedContent =
+  window.getSelection().toString().trim(); //const title =
+  contentElement.querySelector('h2').innerText; //console.log(title)
+  saveContent(postTitle,selectedContent); }); })
 </script>
